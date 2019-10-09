@@ -27,4 +27,4 @@ There are several algorithms that I’d like to include:
 
 ## Can I help?
 
-Yes! Please reach out to me either via email or on github if you can offer help or advice, I’m new to all of this!
+Yes! Please reach out to us either via email or on github if you can offer help or advice, we're new to all of this!
