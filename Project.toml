@@ -4,13 +4,16 @@ authors = ["Thomas Reisser"]
 version = "0.1.0"
 
 [deps]
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+QuantumOpticsBase = "4f57444f-1401-5e15-980d-4471b28d5678"
 
 [compat]
 julia = "1"
 
 [extras]
+SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "SafeTestsets"]

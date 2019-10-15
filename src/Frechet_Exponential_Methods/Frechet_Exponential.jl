@@ -50,7 +50,7 @@ Returns:
 	expm_frechet_AB: (N, N) matrix
 		Frechet derivative of the matrix exponential of A in the direction B.
 """
-function expm_frechet(A::Array, B::Array; compute_expm::Bool=true)
+function expm_frechet(A::AbstractArray, B::AbstractArray; compute_expm::Bool=true)
 	scipy_linalg = pyimport("scipy.linalg")
 	return scipy_linalg.expm_frechet(A, B, compute_expm=compute_expm)
 end
