@@ -8,5 +8,5 @@ function commutator(a, b)
     a * b - b * a
 end
 
-# function to plot a pulse
-function plot()
+# # function to plot a pulse
+# function plot()
