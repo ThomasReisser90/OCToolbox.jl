@@ -1,4 +1,5 @@
 # utility functions
+using LinearAlgebra
 
 # might want to store the Pauli matrices here
 # also want a function to expand the control matrices properly
@@ -10,3 +11,8 @@ end
 
 # # function to plot a pulse
 # function plot()
+
+function expm(A)
+    dim = size(A)[1]
+    I(dim) + A + A^2 ./2 + A^3 ./3
+end

@@ -29,11 +29,11 @@ R = 0.0 * H0
 
 function propagator(c_n)
     # assuming that c_n is a row of
-    exp( -1.0im*(H0 + 1.0im*R + (c_n * H_ctrl)[1])*Δt)
+    exp( -1.0im.*(H0 + 1.0im.*R .+ (c_n .* H_ctrl)[1]).*Δt)
 end
 
 # so lets make a nice array of values
-c_vec = rand(K, N)
+c_vec = rand(K, N) #.* 0.0 .+ 1/sqrt(2)/2
 
 function J2(c_vec)
     c_vec = reshape(c_vec, (K,N))
@@ -50,15 +50,32 @@ function J2(c_vec)
     σ0 = [0.0 + 0.0im, 1.0 + 0.0im]
 
     # now we time evolve our state
+    # test_forward = do_stuff(my_props)
     test_forward = accumulate(*, reverse(my_props))[end]
+
     abs2(σ0' * test_forward * ρ0)
 end
 
-ForwardDiff.gradient(J2, c_vec)
+# compute the jacobian of J2 and we are done
 
-# then use optim to LBFGS minimise functional
-
-
-function derivative(H_k, P_n)
-    Δt * commutator(H_k, P_n)
+function do_stuff(prop_list)
+    res = I(2)
+    for i = 1:N
+        j = N - i + 1
+        res = prop_list[j] * res
+    end
+    res
 end
+
+J2(c_vec)
+
+
+
+# # then use optim to LBFGS minimise functional
+# minmize(1 - J2, jacobian_func)
+
+hi = grad(J2)
+
+hi(c_vec)
+
+J2(c_vec)
