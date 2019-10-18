@@ -7,6 +7,6 @@ include("./utils.jl")
 
 greet() = print("Hello World!")
 
-export commutator, expm_frechet
+export commutator, expm_frechet, expm
 
 end # module
