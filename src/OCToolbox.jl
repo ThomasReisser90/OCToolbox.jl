@@ -2,11 +2,15 @@ module OCToolbox
 
 # using DifferentialEquations, QuantumOpticsBase
 
-include("./Frechet_Exponential_Methods/Frechet_Exponential.jl")
+include("./pulses/pulses.jl")
+include("./problems/cl_sys_problems.jl")
 include("./utils.jl")
 
 greet() = print("Hello World!")
 
-export commutator, expm_frechet, expm
+export Pulse, OptimalPulse
+export commutator, expm, plot, clip_controls
+export ClosedProblem, ClosedStateTransfer
+export expm_frechet
 
 end # module

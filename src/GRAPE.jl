@@ -63,7 +63,7 @@ function my_func_with_grad(x)
     return reshape(grady, (K*N))
 end
 
-my_func_with_grad(c_mat .* 0.001)
+my_func_with_grad(c_mat)
 
 # handy to leave this sitting around!
 Zygote.refresh()
@@ -90,16 +90,17 @@ const sx = reshape([0.0 + 0.0im 1.0+0.0im 1.0+0.0im 0.0+0.0im], (2,2))
 const s = [1.0 + 0.0im, 0.0+0.0im]
 
 function p(x)
-    exp(1im*x * sx)
+    exp(1im.*(x[1] .* sx + x[2] .* sy) )
 end
 
-p(1.0)
+p([1.0, 1.0])
 
 function test(x)
+    x = complex.(real.(x))
     1 - abs2(s' * p(x) * s)
 end
 
-test(1.0)
+test([1.0, 1.0])
 
 function my_func_with_grad(x)
     y, back = Zygote.pullback(test, x)
@@ -108,4 +109,21 @@ function my_func_with_grad(x)
     # return reshape(grady, (K*N))
 end
 
-my_func_with_grad(1.0)
+Zygote.refresh()
+
+my_func_with_grad([1.0, 1.0])
+
+using FiniteDifferences
+
+using BenchmarkTools
+@benchmark central_fdm(5, 1)(test, [1.0, 1.0])
+
+@benchmark my_func_with_grad(1.1)
+test(1.1)
+
+o, t = Zygote.pullback(test, 2.0)
+t(0.9)
+
+p(1.0)
+
+test(1.0)
