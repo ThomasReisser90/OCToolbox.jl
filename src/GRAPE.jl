@@ -33,7 +33,7 @@ function J3(c_mat)
     # nice piece of code that Seth suggested to avoid mutating arrays internally!
     test_forward = mapreduce(propagator, *, eachcol(c_mat))
     # and then compute the infidelity
-    1 - abs2(σ0' * test_forward * ρ0)
+    abs(1 - abs2(σ0' * test_forward * ρ0))
 end
 # so thanks to Seth Axen for helping debug this issue, I think this is basically
 # because Zygote decides that sensitivities should match the sensitivity
@@ -63,7 +63,7 @@ function my_func_with_grad(x)
     return reshape(grady, (K*N))
 end
 
-my_func_with_grad(c_mat)
+my_func_with_grad(c_mat .* 0.001)
 
 # handy to leave this sitting around!
 Zygote.refresh()
@@ -71,7 +71,7 @@ Zygote.refresh()
 # now we use the gradient to minimise the functional!
 # we can probably rewrite the functional to include the reshape but doing this
 # fast to show Thomas!
-res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, c_mat, LBFGS(); inplace=false)
+res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, reshape(c_mat, (10)), LBFGS(); inplace=false)
 
 # NOTE:
 # this has worked to do GRAPE minimisation on several occasions...
@@ -80,3 +80,32 @@ res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, c_mat, LBFGS(); inpl
 # I've asked for help on the #autodiff channel of Julialang slack and hopefully
 # will get a response at some point. Not sure if it's the expm that is a major
 # problem.
+
+
+
+#### MWE of problem with Zygote
+using Zygote
+
+const sx = reshape([0.0 + 0.0im 1.0+0.0im 1.0+0.0im 0.0+0.0im], (2,2))
+const s = [1.0 + 0.0im, 0.0+0.0im]
+
+function p(x)
+    exp(1im*x * sx)
+end
+
+p(1.0)
+
+function test(x)
+    1 - abs2(s' * p(x) * s)
+end
+
+test(1.0)
+
+function my_func_with_grad(x)
+    y, back = Zygote.pullback(test, x)
+    grady = back(1)[1]
+    return y, grady
+    # return reshape(grady, (K*N))
+end
+
+my_func_with_grad(1.0)
