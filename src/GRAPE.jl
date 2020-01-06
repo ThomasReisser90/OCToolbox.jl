@@ -4,7 +4,7 @@
 # otherwise the exp has more problems, it still has problems but it sort of works
 using Zygote
 using QuantumOpticsBase
-using OCToolbox
+# using OCToolbox
 using Optim
 
 b = SpinBasis(1//2)
@@ -33,7 +33,7 @@ function J3(c_mat)
     # nice piece of code that Seth suggested to avoid mutating arrays internally!
     test_forward = mapreduce(propagator, *, eachcol(c_mat))
     # and then compute the infidelity
-    abs(1 - abs2(σ0' * test_forward * ρ0))
+    1 - abs2(σ0' * test_forward * ρ0)
 end
 # so thanks to Seth Axen for helping debug this issue, I think this is basically
 # because Zygote decides that sensitivities should match the sensitivity
@@ -49,8 +49,8 @@ T = 1
 Δt = T/N
 
 # generate some random initial guess
-c_mat = rand(K, N)
-c_mat = c_mat .* 0 .+ 1/sqrt(2)/2
+c_mat = 1/1000 * (rand(K, N) .* 2 .- 1)
+c_mat = c_mat * 0 .+ 1/sqrt(2)/2
 J3(c_mat)
 
 # taken from this page
@@ -64,66 +64,18 @@ function my_func_with_grad(x)
 end
 
 my_func_with_grad(c_mat)
-
 # handy to leave this sitting around!
 Zygote.refresh()
-
 # now we use the gradient to minimise the functional!
 # we can probably rewrite the functional to include the reshape but doing this
 # fast to show Thomas!
-res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, reshape(c_mat, (10)), LBFGS(); inplace=false)
+using Optim
+#res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, reshape(c_mat, (K * N)), LBFGS(); inplace=false)
+# optimize(x->J3(reshape(x, (K,N))), c_mat, LBFGS())#, my_func_with_grad, reshape(c_mat, (K * N)))
+f = x -> J3(reshape(x, (K, N))) # functional
+g = x -> my_func_with_grad(reshape(x, (K,N))) # automatic differentiated version of functional
 
-# NOTE:
-# this has worked to do GRAPE minimisation on several occasions...
-# its also broken on several occasions when it says there is no method matching
-# / for specific inputs that I guess are computed by Zygote.
-# I've asked for help on the #autodiff channel of Julialang slack and hopefully
-# will get a response at some point. Not sure if it's the expm that is a major
-# problem.
+# optimise
+res = optimize(f, g, reshape(c_mat, (K * N)), LBFGS(); inplace=false)
 
-
-
-#### MWE of problem with Zygote
-using Zygote
-
-const sx = reshape([0.0 + 0.0im 1.0+0.0im 1.0+0.0im 0.0+0.0im], (2,2))
-const s = [1.0 + 0.0im, 0.0+0.0im]
-
-function p(x)
-    exp(1im.*(x[1] .* sx + x[2] .* sy) )
-end
-
-p([1.0, 1.0])
-
-function test(x)
-    x = complex.(real.(x))
-    1 - abs2(s' * p(x) * s)
-end
-
-test([1.0, 1.0])
-
-function my_func_with_grad(x)
-    y, back = Zygote.pullback(test, x)
-    grady = back(1)[1]
-    return y, grady
-    # return reshape(grady, (K*N))
-end
-
-Zygote.refresh()
-
-my_func_with_grad([1.0, 1.0])
-
-using FiniteDifferences
-
-using BenchmarkTools
-@benchmark central_fdm(5, 1)(test, [1.0, 1.0])
-
-@benchmark my_func_with_grad(1.1)
-test(1.1)
-
-o, t = Zygote.pullback(test, 2.0)
-t(0.9)
-
-p(1.0)
-
-test(1.0)
+J3(reshape(res.minimizer, (K, N)))
