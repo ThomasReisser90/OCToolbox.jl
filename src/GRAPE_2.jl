@@ -65,7 +65,7 @@ function full_propagator(c_vec, H0)
     exp((H0 + c_vec[1] .* sx .+ c_vec[2] .* sy) .* (-Δt*π*im))
 end
 
-N_ensemble = 3
+N_ensemble = 20
 weights = ones(N_ensemble)
 
 function J3_ensemble(x)
@@ -89,6 +89,40 @@ i=3
 U = mapreduce(c->full_propagator(c, H_drift[i]), *, eachcol(out))
 U*ρ0_ens[i]
 
+x = out
+res = 10
+z = []
+for i = -res:res
+    println(i)
+    H0 = -i * sz
+    U = mapreduce(c->full_propagator(c, H0), *, eachcol(x))
+    state = U * ρ0
+    append!(z, real(state' * sz * state))
+end
+
+using Plots
+plot(z)
+
+z
+
+
+
+
 using BenchmarkTools
 
 @benchmark GRAPE(J3_ensemble, c_mat, K, N)
+
+propagator(c_vec) = exp((c_vec[1] .* sx .+ c_vec[2] .* sy) .* (-Δt*π*im))
+x = rand(2,3)
+mapreduce(propagator, *, eachcol(x))
+
+x[:,1]
+prop1 = propagator(x[:,1])
+prop2 = propagator(x[:,2])
+
+prop3 = propagator(x[:,3])
+
+prop1 * prop2 * prop3
+
+
+prop3 * prop2 * prop1
