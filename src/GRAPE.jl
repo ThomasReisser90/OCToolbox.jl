@@ -72,7 +72,7 @@ Zygote.refresh()
 using Optim
 #res = optimize(x->J3(reshape(x, (K,N))), my_func_with_grad, reshape(c_mat, (K * N)), LBFGS(); inplace=false)
 # optimize(x->J3(reshape(x, (K,N))), c_mat, LBFGS())#, my_func_with_grad, reshape(c_mat, (K * N)))
-f = x -> J3(reshape(x, (K, N))) # functional
+f = x -> J3( reshape(x, (K, N) ) ) # functional
 g = x -> my_func_with_grad(reshape(x, (K,N))) # automatic differentiated version of functional
 
 # optimise

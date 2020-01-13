@@ -42,17 +42,53 @@ function J3(x)
     1 - abs2(σ0' * test_forward * ρ0)
 end
 
-N = 5 # 5 steps
+N = 5 # 5 time steps
 K = 2 # 2 controls
 
 T = 1
 Δt = T/N
 
-x = 1/1000 * (rand(K, N) .* 2 .- 1)
-x = x * 0 .+ 1/sqrt(2)/2
-J3(x)
 
+c_mat = 1/1000 * (rand(K, N) .* 2 .- 1)
 
-z = GRAPE(J3, x, K, N)
+J3(c_mat)
 
-J3(z)
+out = GRAPE(J3,c_mat, K, N)
+
+J3(out)
+
+H_drift = [-10*sz, 0*sz, 10*sz]
+ρ0_ens = [ρ0, ρ0, ρ0]
+σ0_ens = [ρ0, σ0, ρ0]
+
+function full_propagator(c_vec, H0)
+    exp((H0 + c_vec[1] .* sx .+ c_vec[2] .* sy) .* (-Δt*π*im))
+end
+
+N_ensemble = 3
+weights = ones(N_ensemble)
+
+function J3_ensemble(x)
+    err = 0
+    x = complex.(real.(x))
+    for i = 1:N_ensemble
+        # U = full_propagator(x, H_drift[i])
+        U = mapreduce(c->full_propagator(c, H_drift[i]), *, eachcol(x))
+        err += 1 - abs2(σ0_ens[i]' * U * ρ0_ens[i])
+    end
+    err
+end
+
+J3_ensemble(c_mat)
+
+out = GRAPE(J3_ensemble, c_mat, K, N)
+
+J3_ensemble(out)
+
+i=3
+U = mapreduce(c->full_propagator(c, H_drift[i]), *, eachcol(out))
+U*ρ0_ens[i]
+
+using BenchmarkTools
+
+@benchmark GRAPE(J3_ensemble, c_mat, K, N)
