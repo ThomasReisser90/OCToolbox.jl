@@ -23,7 +23,7 @@ i2 = Matrix{Complex{Float64}}(I, 2, 2)
 Ψ = [1+0.0im, 0.0]
 ρ = [0+0.0im, 1.0]
 
-# we set up a function
+# we set up a functional
 function fn(controls)
     controls = complex.(real.(controls))
     U = stack_props(controls, 0 * sz)

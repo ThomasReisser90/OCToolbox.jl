@@ -5,7 +5,7 @@ using QuantumInformation
 
 # in future this will be included in the pw_integrate function
 function full_propagator(c_vec, H0)
-    exp((H0 + c_vec[1] .* sx .+ c_vec[2] .* sy) .* (-Δt*π*im))
+    exp((H0 + π*(c_vec[1] .* sx .+ c_vec[2] .* sy)) .* (-Δt*im))
 end
 
 # not super happy about the way these are working right now
@@ -23,16 +23,25 @@ i2 = Matrix{Complex{Float64}}(I, 2, 2)
 Ψ = [1+0.0im, 0.0]
 ρ = [0+0.0im, 1.0]
 
-# we set up a function
+N_ensemble = 10
+ΔRange = 10  * 2π
+H_drift = collect(range(-ΔRange, ΔRange, length = N_ensemble)) .* [sz]
+
+
+# we set up a functional for a robust pulse
 function fn(controls)
     controls = complex.(real.(controls))
-    U = stack_props(controls, 0 * sz)
-    C2(ρ, U * Ψ)
+    err = 0
+    for i = 1:N_ensemble
+        U = stack_props(controls, H_drift[i])
+        err += C2(ρ, U * Ψ)
+    end
+    err
 end
 
 K = 2
-N = 10
-T = 2
+N = 20
+T = 10
 Δt = T/N
 
 control_guess = rand(K, N).*0.001
