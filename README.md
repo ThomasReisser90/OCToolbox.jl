@@ -18,7 +18,7 @@ There are lots of groups that are interested in this and I feel it would be usef
 
 There are several algorithms that we would like to include:
 
-- [ ] GRAPE
+- [ x ] GRAPE
 - [ ] GOAT
 - [ ] GROUP
 - [ ] dCRAB
@@ -27,7 +27,7 @@ There are several algorithms that we would like to include:
 
 ## Can I help?
 
-Yes! Please reach out to me either via email or on github if you can offer help or advice, we are new to all of this!
+Yes! Please reach out to either of us via email or on github if you can offer help or advice, we are both new to all of this!
 
 ## Some Ideas/Discussions
  - Discuss general ideas around syntax, how do we structure the code and call algorithms?
@@ -40,5 +40,3 @@ Yes! Please reach out to me either via email or on github if you can offer help 
  - Switch algorithms mid optimisation? Start many algorithms at once?
  - Closed and open system simulators
  - DOCUMENTATION! Easier if we write something as we go instead of half ass it at the end!
- - SOMEONE NEEDS TO CLARIFY WITH ME WHEN WE USE RELATIVE IMPORT PATHS and when we use the whole module, then we can tidy stuff up!
- - Export in each module or not?
