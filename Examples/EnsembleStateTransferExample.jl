@@ -47,6 +47,9 @@ T = 10
 control_guess = rand(K, N).*0.001
 fn(control_guess)
 
+Zygote.gradient(fn, control_guess)
+
+
 o = GRAPE(fn, control_guess, K, N)
 
 fn(o.minimizer)

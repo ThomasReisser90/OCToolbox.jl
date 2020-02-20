@@ -24,6 +24,15 @@ end
     CRAB
 """
 
-function CRAB(functional, controls)
-    println("I don't exist yet")
+function CRAB(functional, controls, n_SI)
+    # N is the number of SI
+
+end
+
+function GROUP()
+    println("use AD to optimise coefficients of dCRAB")
+end
+
+function Krotov()
+    println("how do I work with AD?")
 end
