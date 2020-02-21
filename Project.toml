@@ -4,13 +4,20 @@ authors = ["Thomas Reisser", "Alastair Marshall"]
 version = "0.1.0"
 
 [deps]
-PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+IRTools = "7869d1d1-7146-5819-86e3-90919afe41df"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
+ZygoteRules = "700de1a5-db45-46bc-99cf-38207098b444"
 
 [compat]
-julia = "1"
+julia = "1.3"
 
 [extras]
+QuantumInformation = "3c0b384b-479c-5684-b2ef-9d7a46dd931e"
+SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "SafeTestsets", "QuantumInformation"]

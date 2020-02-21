@@ -1,12 +1,11 @@
 """
 This is for testing the Frechet Matrix Exponential
 """
-
+using OCToolbox
 using LinearAlgebra
 # I do not understand woh to conveniently import modules from another file
 # push!(LOAD_PATH, pwd())
 # push!(LOAD_PATH, joinpath(pwd(), "Frechet_Exponential_Methods"))
-using OCToolbox
 
 # A_real = [1 2 3; 0 4 6; 0 0 2]
 # B_real = [1 0 0; 0 1 0; 0 0 1]
@@ -20,10 +19,9 @@ using OCToolbox
 # println(expm_frechet(A_c, B_c))
 # println("\n"^1)
 
-M = [1 0 0; 0 1 0; 0 0 1]
-M = [log(1) 0 0; 0 log(1) 0; 0 0 log(1)]
+M = log.(I(3))
 
 
 println("\n"^1)
-println(OCToolbox.expm_frechet(M, M))
+println(expm_frechet(M, M))
 println("\n"^1)

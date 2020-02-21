@@ -9,7 +9,7 @@
 
 # OCToolbox
 
-OCToolbox.jl aims to be a collection of fast optimal control algorithms implemented in Julia. 
+OCToolbox.jl aims to be a collection of fast optimal control algorithms implemented in Julia.
 
 ## What is Optimal Control?
 
@@ -17,7 +17,7 @@ A selection of numerical methods which can be used to enhance our control of a q
 
 ## Why Julia?
 
-Julia is a fast and flexible programming language designed for numerical computation making it an excellent candidate for this type of project. I think that it’ll be possible to leverage multiple dispatch to enhance things too. 
+Julia is a fast and flexible programming language designed for numerical computation making it an excellent candidate for this type of project. I think that it’ll be possible to leverage multiple dispatch to enhance things too.
 
 ## Why another package?
 
@@ -25,9 +25,9 @@ There are lots of groups that are interested in this and I feel it would be usef
 
 ## Roadmap
 
-There are several algorithms that I’d like to include:
+There are several algorithms that we would like to include:
 
-- [ ] GRAPE
+- [ x ] GRAPE
 - [ ] GOAT
 - [ ] GROUP
 - [ ] dCRAB
@@ -36,4 +36,15 @@ There are several algorithms that I’d like to include:
 
 ## Can I help?
 
-Yes! Please reach out to us either via email or on github if you can offer help or advice, we're new to all of this!
+Yes! Please reach out to either of us via email or on github if you can offer help or advice, we are both new to all of this!
+
+## Some Ideas/Discussions
+ - Discuss general ideas around syntax, how do we structure the code and call algorithms?
+ - Make sure everything works with SparseMatrices
+ - Are there any useful benchmarks that we can run on a users computer when they install to estimate the algorithms that they can use?
+ - Incorporating noise, Thomas has ideas? Base optimisation on S(ω)
+ - Optimise the shit out of the code so that every algorithm is as fast as we can make it
+ - Python bindings! Should offer these as soon as possible
+ - Switch algorithms mid optimisation? Start many algorithms at once?
+ - Open system simulators
+ - DOCUMENTATION! Easier if we write something as we go instead of half ass it at the end!
