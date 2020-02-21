@@ -35,15 +35,13 @@ struct ProblemInfo
 
     # nervous about including these, maybe its better that the user really defines
     # all this stuff themselves. Don't want to over engineer things
-    # # drift Hamiltonian/Hamiltonians
-    # H_drift
-    # # control Hamiltonian/Hamiltonians
-    # H_ctrl
-
-    # I would like to keep a space for a full time dependent Hamiltonian, so that we
-    # can integrate stuff nicely!
-    full_Hamiltonian
-
+    # drift Hamiltonian/Hamiltonians
+    H_drift
+    # control Hamiltonian/Hamiltonians
+    H_ctrl
+    # # I would like to keep a space for a full time dependent Hamiltonian, so that we
+    # # can integrate stuff nicely!
+    # full_Hamiltonian
     # timestep? would make it possible to use integrator quickly
     timestep
     # total time
@@ -51,3 +49,9 @@ struct ProblemInfo
     # functional, here we can assume that things work
     functional
 end
+
+"""
+I'm not sure that this is actually the right way to go, unless we copy the values
+out of this struct and into the code directly and just use this to sort of save
+    the state of the code as it stands.
+"""

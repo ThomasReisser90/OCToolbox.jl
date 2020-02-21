@@ -17,3 +17,14 @@ function export_pulse(filename, T, Ω, ϕ)
         writedlm(io, [T Ω ϕ])
     end
 end
+
+"""
+Should really offer in place versions too but need to see how that works!
+"""
+function plot_pulse(pulse)
+    # noice
+end
+
+function plot_pulse(T, Ω, ϕ; res = 1000)
+
+end

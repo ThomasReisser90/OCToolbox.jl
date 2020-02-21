@@ -3,21 +3,18 @@ using OCToolbox
 using LinearAlgebra
 using QuantumInformation
 
-# in future this will be included in the pw_integrate function
-function full_propagator(c_vec, H0)
-    exp((H0 + c_vec[1] .* sx .+ c_vec[2] .* sy) .* (-Δt*π*im))
-end
-
 # not super happy about the way these are working right now
 function stack_props(c_mat,H0)
     init = I(2)
     for i in 1:size(c_mat)[2]
-        init = full_propagator(c_mat[:,i], H0) * init
+        init = pw_integrate(H0, H_ctrl, c_mat[:, i], Δt) * init
     end
     init
 end
 
 i2 = Matrix{Complex{Float64}}(I, 2, 2)
+H_drift = 0*sz
+H_ctrl = [π*sx, π * sy]
 
 # we define our initial and final states
 Ψ = [1+0.0im, 0.0]
@@ -26,7 +23,7 @@ i2 = Matrix{Complex{Float64}}(I, 2, 2)
 # we set up a functional
 function fn(controls)
     controls = complex.(real.(controls))
-    U = stack_props(controls, 0 * sz)
+    U = stack_props(controls, H_drift)
     C2(ρ, U * Ψ)
 end
 
