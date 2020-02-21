@@ -23,6 +23,17 @@ function pw_integrate(H0::T, Hctrl, control, dt)::T where T
     exp((-im*dt) .* H)
 end
 
+"""
+This simply computes the full time evolution and returns the final propagator which
+can be useful for GRAPE
+"""
+function pw_full_evolution(H0::T, Hctrl, control, dt, init::T)::T where T
+    for i = 1:size(control)[2]
+        init = pw_integrate(H0, Hctrl, control[:, i], dt) * init
+    end
+    init
+end
+
 
 # we should write this to use concrete_solve so it'll work with Zygote in future
 function ode_integrate()

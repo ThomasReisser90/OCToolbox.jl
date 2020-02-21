@@ -10,6 +10,6 @@ export GRAPE
 export export_pulse
 export C1, C2, C3, C4, C5, C6, C7
 export ProblemInfo
-export pw_integrate, ode_integrate, me_integrate
+export pw_integrate, pw_full_evolution, ode_integrate, me_integrate
 
 end
