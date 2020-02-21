@@ -1,3 +1,12 @@
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://Bzzzt90.github.io/OCToolbox.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://Bzzzt90.github.io/OCToolbox.jl/dev)
+[![Build Status](https://travis-ci.com/Bzzzt90/OCToolbox.jl.svg?branch=master)](https://travis-ci.com/Bzzzt90/OCToolbox.jl)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/Bzzzt90/OCToolbox.jl?svg=true)](https://ci.appveyor.com/project/Bzzzt90/OCToolbox-jl)
+[![Codecov](https://codecov.io/gh/Bzzzt90/OCToolbox.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Bzzzt90/OCToolbox.jl)
+[![Coveralls](https://coveralls.io/repos/github/Bzzzt90/OCToolbox.jl/badge.svg?branch=master)](https://coveralls.io/github/Bzzzt90/OCToolbox.jl?branch=master)
+[![Build Status](https://api.cirrus-ci.com/github/Bzzzt90/OCToolbox.jl.svg)](https://cirrus-ci.com/github/Bzzzt90/OCToolbox.jl)
+
+
 # OCToolbox
 
 OCToolbox.jl aims to be a collection of fast optimal control algorithms implemented in Julia.
@@ -36,7 +45,6 @@ Yes! Please reach out to either of us via email or on github if you can offer he
  - Incorporating noise, Thomas has ideas? Base optimisation on S(ω)
  - Optimise the shit out of the code so that every algorithm is as fast as we can make it
  - Python bindings! Should offer these as soon as possible
- - Web interface? Add some backend so that you can monitor the progress of a running algorithm?
  - Switch algorithms mid optimisation? Start many algorithms at once?
- - Closed and open system simulators
+ - Open system simulators
  - DOCUMENTATION! Easier if we write something as we go instead of half ass it at the end!
