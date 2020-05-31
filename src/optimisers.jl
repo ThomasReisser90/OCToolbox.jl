@@ -7,7 +7,8 @@ using Zygote, Optim
     functional
 
 """
-function GRAPE(functional, controls, K, N)
+function GRAPE(functional, controls; g_tol=1e-6)
+    K, N = size(controls)
     # here we use an inplace gradient update
     function g!(G, x)
         _, back = Zygote.pullback(functional, reshape(x, (K, N)))
@@ -16,7 +17,7 @@ function GRAPE(functional, controls, K, N)
 
     f = x -> functional(reshape(x, (K, N)))
 
-    res = optimize(f, g!, controls, LBFGS(), Optim.Options(g_tol=1e-6, show_trace=true, store_trace = true))
+    res = optimize(f, g!, controls, LBFGS(), Optim.Options(g_tol=g_tol, show_trace=true, store_trace = true))
     return res
 end
 
