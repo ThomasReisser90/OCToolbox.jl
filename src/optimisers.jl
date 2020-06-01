@@ -21,6 +21,14 @@ function GRAPE(functional, controls; g_tol=1e-6)
     return res
 end
 
+function GRAPE_no_reshape(functional, controls; g_tol=1e-6)
+    # here we use an inplace gradient update
+    function g!(G, x)
+		@views G .= Zygote.gradient(functional, x)[1]
+    end
+    res = optimize(functional, g!, controls, LBFGS(), Optim.Options(g_tol=g_tol, show_trace=true, store_trace = true))
+    return res
+end
 """
     CRAB
 """
